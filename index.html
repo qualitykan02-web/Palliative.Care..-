@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Palliative Care Dashboard – กาญจนบุรี ปีงบประมาณ 2569</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#F4A6C3;--pink-l:#FDE7F0;--pink-xl:#FFF6FA;--pink-t:#B8366D;
+  --green:#8FD3B0;--green-l:#E1F5EC;--green-xl:#F4FBF8;--green-t:#237A55;
+  --blue:#9CCBEF;--blue-l:#E3F1FC;--blue-xl:#F4F9FE;--blue-t:#27699B;
+  --ink:#2F4553;--mut:#74889A;--line:#E6EEF4;--bg:#F7FBFD;
+  --shadow:0 6px 22px rgba(80,130,170,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Prompt','Noto Sans Thai',Tahoma,sans-serif;font-size:14.5px;line-height:1.5}
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(80,130,170,.07)}
+.top:before{content:"";display:block;height:6px;background:linear-gradient(90deg,var(--pink),#fff 33%,var(--green) 55%,var(--blue))}
+.bar1{max-width:1320px;margin:0 auto;padding:12px 24px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.ttl h1{margin:0;font-size:22px;font-weight:700;color:var(--blue-t)}
+.ttl p{margin:0;color:var(--mut);font-size:12.5px;font-weight:300}
+.acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:99px;padding:8px 16px;font:500 13px 'Prompt',sans-serif;cursor:pointer;transition:.15s}
+.btn.g{background:var(--green-l);color:var(--green-t)}.btn.g:hover{background:var(--green)}
+.btn.b{background:var(--blue-l);color:var(--blue-t)}.btn.b:hover{background:var(--blue)}
+.src{font-size:12px;color:var(--mut);background:var(--blue-xl);border:1px dashed var(--blue);padding:4px 12px;border-radius:99px}
+nav{max-width:1320px;margin:0 auto;padding:10px 24px 12px;display:flex;gap:8px;overflow:auto}
+nav button{border:1px solid var(--line);background:#fff;color:var(--mut);border-radius:99px;padding:8px 18px;font:500 14px 'Prompt',sans-serif;cursor:pointer;white-space:nowrap}
+nav button:hover{background:var(--blue-xl);color:var(--blue-t)}
+nav button.on{background:linear-gradient(120deg,var(--pink-l),var(--blue-l));color:var(--ink);border-color:var(--blue);font-weight:600}
+.wrap{max-width:1320px;margin:0 auto;padding:6px 24px 50px}
+section.tab{display:none}section.tab.on{display:block}
+h2{font-size:18px;margin:26px 0 12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:10px}
+h2:before{content:"";width:6px;height:22px;border-radius:3px;background:linear-gradient(var(--pink),var(--blue))}
+h2 small{font-weight:300;color:var(--mut);font-size:12.5px}
+.card{background:#fff;border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);padding:18px}
+.grid{display:grid;gap:14px}.grid>*{min-width:0}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.hero{grid-template-columns:300px 1fr}
+.ring{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,#fff,var(--blue-xl))}
+.ring .l{color:var(--mut);font-size:13px}
+.sc{padding:16px 18px;border-left:7px solid var(--pink)}
+.sc.g{border-left-color:var(--green)}.sc.b{border-left-color:var(--blue)}
+.sc .t{font-size:12.5px;color:var(--mut)}.sc .v{font-size:30px;font-weight:700;line-height:1.2}
+.sc .m{font-size:12px;color:var(--mut)}
+.sc.p .v{color:var(--pink-t)}.sc.g .v{color:var(--green-t)}.sc.b .v{color:var(--blue-t)}
+.prog{height:9px;border-radius:9px;background:#EEF3F7;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;border-radius:9px}
+.stat{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.stat .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px}
+.stat b{font-size:24px;display:block;line-height:1.1}.stat span{font-size:12.5px;color:var(--mut)}
+.pill{display:inline-block;padding:2px 11px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--green-l);color:var(--green-t)}.pill.no{background:var(--pink-l);color:var(--pink-t)}
+.kpi{position:relative;padding:16px 18px}
+.kpi .num{position:absolute;right:14px;top:6px;font-size:38px;font-weight:700;color:var(--pink-l);line-height:1}
+.kpi.ok .num{color:var(--green-l)}
+.kpi h3{margin:0 0 8px;font-size:12.5px;font-weight:500;line-height:1.45;padding-right:34px;min-height:74px}
+.kpi .val{font-size:28px;font-weight:700;color:var(--pink-t)}.kpi.ok .val{color:var(--green-t)}
+.track{position:relative;height:12px;background:#EEF3F7;border-radius:9px;margin:16px 0 6px}
+.track .f{position:absolute;inset:0 auto 0 0;border-radius:9px;background:linear-gradient(90deg,var(--pink),#F8C4D8)}
+.kpi.ok .track .f{background:linear-gradient(90deg,var(--green),#B9E6D0)}
+.track .mk{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--ink);border-radius:2px}
+.track .mk:after{content:"เป้า";position:absolute;top:-17px;left:-7px;font-size:10px;color:var(--mut)}
+.tg{font-size:12px;color:var(--mut)}
+.dots{display:flex;gap:3px;margin-top:8px;align-items:center;font-size:12px;color:var(--mut)}
+.dots b{width:14px;height:6px;border-radius:3px;background:#E8EEF3;display:inline-block}
+.dots b.on{background:var(--pink)}.kpi.ok .dots b.on{background:var(--green)}
+.hb{display:grid;grid-template-columns:var(--lw,220px) 1fr 58px;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+.hb .tr{height:16px;background:#EEF3F7;border-radius:9px;overflow:hidden;position:relative}
+.hb .tr i{display:block;height:100%;border-radius:9px}
+.hb b{text-align:right;font-weight:600}
+.hb .rk{color:var(--mut);font-weight:600;text-align:left}
+.tbl{overflow:auto;border-radius:14px;border:1px solid var(--line)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
+th{background:linear-gradient(var(--blue-l),#D5E9F8);color:var(--blue-t);padding:10px 8px;font-weight:600;white-space:nowrap;position:sticky;top:0;border-bottom:2px solid var(--blue)}
+th.s{cursor:pointer}th.s:hover{background:var(--pink-l);color:var(--pink-t)}
+th.sorted:after{content:" ▾"}th.sorted.asc:after{content:" ▴"}
+td{padding:8px;text-align:center;border-bottom:1px solid #fff}
+td.l,th.l{text-align:left}
+td.n{white-space:nowrap}
+tbody tr:nth-child(even) td.z{background:var(--blue-xl)}
+td.l{background:#fff;border-bottom:1px solid var(--line)}
+#cmpTbl td:first-child,#cmpTbl th:first-child{position:sticky;left:0;z-index:2}
+tr.prov td{font-weight:700;background:var(--green-l)!important;border-top:3px solid var(--green)}
+tr.sub td{font-weight:700;background:var(--pink-xl)}
+.legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut);margin-top:10px;flex-wrap:wrap}
+.legend i{display:block;width:180px;height:10px;border-radius:6px;background:linear-gradient(90deg,#F5BCD2,#fff,#A5DCC0);border:1px solid var(--line)}
+select{font:500 14px 'Prompt',sans-serif;padding:8px 16px;border-radius:99px;border:2px solid var(--blue);color:var(--blue-t);background:#fff;outline:none;max-width:100%}
+.note{font-size:12px;color:var(--mut);margin-top:10px}
+.chip{display:inline-block;background:var(--blue-l);color:var(--blue-t);padding:2px 12px;border-radius:99px;font-size:12px;font-weight:600;margin-left:8px}
+.chip.p{background:var(--pink-l);color:var(--pink-t)}.chip.g{background:var(--green-l);color:var(--green-t)}
+.item{padding:12px 0;border-bottom:1px dashed var(--line)}.item:last-child{border:0}
+.item .d{font-size:12px;color:var(--mut);margin-top:2px}
+.up{color:var(--green-t);font-weight:600}.dn{color:var(--pink-t);font-weight:600}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:.3s;z-index:99}
+.toast.on{opacity:1}
+.drop{position:fixed;inset:0;background:rgba(156,203,239,.55);display:none;place-items:center;font-size:26px;font-weight:600;color:var(--blue-t);z-index:90;backdrop-filter:blur(3px)}
+.drop.on{display:grid}
+.sel-row{display:grid;grid-template-columns:420px 1fr;gap:20px;align-items:start}
+@media(max-width:1000px){.g2,.g3,.g4,.hero,.sel-row{grid-template-columns:1fr}.hb{grid-template-columns:120px 1fr 52px}}
+@media print{
+ .top{position:static;box-shadow:none}.acts,nav,.toast,select{display:none}
+ section.tab{display:block!important;break-after:page}.card{box-shadow:none;break-inside:avoid}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="bar1">
+    <div class="ttl"><h1>Palliative Care Dashboard · จังหวัดกาญจนบุรี</h1><p>ตัวชี้วัดตรวจราชการกรมการแพทย์ ปีงบประมาณ 2569</p></div>
+    <div class="acts">
+      <span class="src" id="src">กำลังเชื่อมต่อ Google Sheets…</span>
+      <button class="btn g" id="btnSync">↻ รีเฟรชตอนนี้</button>
+    </div>
+  </div>
+  <nav id="nav"></nav>
+</div>
+<div class="wrap">
+  <section class="tab" id="t0"></section>
+  <section class="tab" id="t1"></section>
+  <section class="tab" id="t2"></section>
+  <section class="tab" id="t3"></section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const nf=(v,d=1)=>(v==null||isNaN(v))?'–':Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const ni=v=>(v==null||isNaN(v))?'–':Number(v).toLocaleString('en-US',{maximumFractionDigits:0});
+const sum=a=>a.reduce((x,y)=>x+(y||0),0);
+const avg=a=>{const b=a.filter(x=>x!=null);return b.length?sum(b)/b.length:null};
+const C={pink:'#F4A6C3',pinkD:'#E57AA6',pinkT:'#B8366D',green:'#8FD3B0',greenD:'#4DB38A',greenT:'#237A55',blue:'#9CCBEF',blueD:'#5AA9DD',blueT:'#27699B'};
+const SHORT=["ค่าเฉลี่ยคะแนนถ่วงน้ำหนักของความพร้อมด้านทรัพยากรและระบบการดูแลผู้ป่วย Palliative Care ของโรงพยาบาลในจังหวัด", "ร้อยละของผู้ป่วยผู้ใหญ่สามารถเข้าถึงบริการ Palliative Care (เมื่อเทียบกับค่าคาดการณ์); Accessibility", "ร้อยละของผู้ป่วยเด็กสามารถเข้าถึงบริการ Palliative Care (เมื่อเทียบกับค่าคาดการณ์); Accessibility", "ร้อยละของผู้ป่วย Palliative Care ได้รับบริการดูแลต่อเนื่องที่บ้าน/ชุมชน", "ร้อยละของผู้ป่วย palliative care ที่ได้รับการทำ family meeting และ Advance Care Planning", "อัตราประชากรที่จัดทำ Living Will (ต่อประชากร 1,000 คน)", "ร้อยละของผู้ป่วยประคับประคอง (Palliative Care) ที่ได้รับการดูแลตามแผนดูแลล่วงหน้า (Advance Care Planning; ACP) อย่างมีคุณภาพ โดยมีสถานที่เสียชีวิตเป็นไปตามความประสงค์ (Preferred Place of Death)", "ร้อยละของผู้ป่วยกลุ่มโรคมะเร็งระยะประคับประคอง ICD-10 รหัส C00-C96 หรือ D37-D48 ที่ได้รับการจัดการอาการปวด และ/หรือ อาการรบกวน โดยใช้ Opioid", "ร้อยละของโรงพยาบาลที่ให้บริการ Home ward for active dying patient"];
+const KIND=['ratio','pct','pct','pct','pct','per1000','pct','pct','flag'];
+let M=null;
+
+const numv=v=>(typeof v==='number'&&isFinite(v))?v:null;
+
+/* ---------- build model from sheet grid ---------- */
+function buildModel(g){
+  const row=i=>g[i-1]||[];
+  const findA=code=>{const i=g.findIndex(r=>r&&r[0]===code);if(i<0)throw new Error('ไม่พบรายการ '+code+' (โครงสร้างชีต "ข้อมูล" เปลี่ยนไป)');return i+1};
+  const N=16,sl=a=>a.slice(3,3+N);
+  const full=sl(row(4)).map(String),short=sl(row(5)).map(String);
+  const hosp=short.map((n,i)=>({name:n,full:full[i]}));
+  const inds=[];
+  for(let k=1;k<=9;k++){
+    const tr=findA('KPI'+k),rA=row(tr+1),rB=row(tr+2),rR=row(tr+3);
+    const A=rA.length?sl(rA).map(numv):Array(N).fill(null),B=sl(rB).map(numv);
+    const hasA=A.some(x=>x!=null),hasB=B.some(x=>x!=null);
+    const TA=numv(rA[19])??(hasA?sum(A):null),TB=numv(rB[19])??(hasB?sum(B):(k===9?N:null));
+    const kind=KIND[k-1];
+    const mult={ratio:1,pct:100,per1000:1000,flag:100}[kind];
+    const res=(a,b)=>(a==null||b==null||b===0)?null:a/b*mult;
+    inds.push({k,name:row(tr)[1],target:numv(row(tr)[2]),la:rA[1],lb:rB[1],lr:rR[1],A,B,TA,TB,kind,
+      sumA:hasA?sum(A):null,sumB:hasB?sum(B):null,
+      hres:A.map((a,i)=>(kind==='ratio'||kind==='pct')?res(a,B[i]):null),
+      result:res(TA,TB),level:numv(rR[21]),short:SHORT[k-1]});
+  }
+  const qual=(codes,w)=>codes.map(code=>{const r=findA(code),rw=row(r);return{code,name:rw[1],desc:rw[22]||'',vals:sl(rw).map(numv),avg:null}});
+  const O=qual(['O1','O2','O3','O4','O5','O6']),I=qual(['M1','M2']),S=qual(['S1']);
+  [...O,...I,...S].forEach(q=>q.avg=avg(q.vals));
+  const par=lab=>{const r=g.find(r=>r&&typeof r[1]==='string'&&r[1].startsWith(lab));if(!r)throw new Error('ไม่พบพารามิเตอร์ "'+lab+'"');return numv(r[3])};
+  const w={q:par('น้ำหนักคะแนนเชิงปริมาณ'),o:par('น้ำหนักคะแนนเชิงคุณภาพ ด้านผลลัพธ์'),i:par('น้ำหนักคะแนนเชิงคุณภาพ ด้านผลกระทบ'),s:par('น้ำหนักคะแนนเชิงคุณภาพ ด้านเครือข่าย'),m:par('คะแนนเต็มต่อตัวชี้วัด'),t:par('คะแนนรวมเต็ม')};
+  const tot=(items,h)=>avg(items.map(q=>q.vals[h]));
+  hosp.forEach((h,i)=>{
+    h.oT=tot(O,i);h.iT=tot(I,i);h.sT=tot(S,i);
+    h.oS=h.oT/100*w.o*w.t;h.iS=h.iT/100*w.i*w.t;h.sS=h.sT/100*w.s*w.t;
+    h.quality=h.oS+h.iS+h.sS;
+    h.v={};inds.forEach(x=>{h.v[x.k]=x.hres[i]});
+    h.homeward=inds[8].A[i]===1;
+  });
+  const prov={oT:avg(hosp.map(h=>h.oT)),iT:avg(hosp.map(h=>h.iT)),sT:avg(hosp.map(h=>h.sT))};
+  prov.oS=prov.oT/100*w.o*w.t;prov.iS=prov.iT/100*w.i*w.t;prov.sS=prov.sT/100*w.s*w.t;
+  prov.quality=prov.oS+prov.iS+prov.sS;
+  const lv=inds.map(x=>x.level).filter(x=>x!=null);
+  const levelSum=sum(lv),levelMax=w.m*lv.length,pctQ=levelSum/levelMax*100;
+  const qS=pctQ/100*w.q*w.t;
+  const comp=[{key:'q',label:'เชิงปริมาณ (ตัวชี้วัด 9 ตัว)',s100:pctQ,w:w.q,earned:qS,max:w.q*w.t,c:'b'},
+    {key:'o',label:'เชิงคุณภาพ ด้านผลลัพธ์',s100:prov.oT,w:w.o,earned:prov.oS,max:w.o*w.t,c:'g'},
+    {key:'i',label:'เชิงคุณภาพ ด้านผลกระทบ',s100:prov.iT,w:w.i,earned:prov.iS,max:w.i*w.t,c:'p'},
+    {key:'s',label:'เชิงคุณภาพ ด้านเครือข่าย Service Plan',s100:prov.sT,w:w.s,earned:prov.sS,max:w.s*w.t,c:'b'}];
+  return{hosp,inds,O,I,S,w,prov,levelSum,levelMax,pctQ,comp,total:sum(comp.map(c=>c.earned)),pass:inds.filter(x=>x.result>=x.target).length};
+}
+
+/* ---------- helpers ---------- */
+function heat(v,lo=0,hi=100){
+  if(v==null)return'#fff';
+  const t=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));
+  const a=[245,188,210],m=[255,255,255],g=[165,220,192];
+  const mix=(p,q,s)=>p.map((x,i)=>Math.round(x+(q[i]-x)*s));
+  return`rgb(${t<.5?mix(a,m,t*2):mix(m,g,(t-.5)*2)})`;
+}
+const colOf=c=>({b:C.blueD,g:C.greenD,p:C.pinkD}[c]);
+const fmtR=(x,v)=>x.kind==='pct'||x.kind==='flag'?nf(v,1)+'%':nf(v,2);
+const fmtT=x=>x.kind==='pct'||x.kind==='flag'?x.target+'%':x.kind==='per1000'?x.target+' ต่อ 1,000':'ระดับ '+x.target;
+function hbars(items,o={}){ // items:[{label,val,color,text}]
+  const mx=o.max??Math.max(...items.map(i=>i.val));
+  return`<div style="--lw:${o.lw||220}px">`+items.map((i,n)=>`<div class="hb" ${o.rank?`style="grid-template-columns:28px ${o.lw||200}px 1fr 58px"`:''}>${o.rank?`<span class="rk">${n+1}</span>`:''}<span>${i.label}</span><div class="tr"><i style="width:${Math.max(0,i.val)/mx*100}%;background:${i.color}"></i>${o.mark!=null?`<span style="position:absolute;left:${o.mark/mx*100}%;top:-3px;bottom:-3px;width:2px;background:#2F4553"></span>`:''}</div><b>${i.text??nf(i.val,1)}</b></div>`).join('')+'</div>';
+}
+function kpiCard(x){
+  const ok=x.result>=x.target,mx=Math.max(x.result,x.target)*1.12;
+  return`<div class="card kpi ${ok?'ok':''}"><div class="num">${x.k}</div><h3>${x.short}</h3>
+   <div><span class="val">${fmtR(x,x.result)}</span> <span class="pill ${ok?'ok':'no'}">${ok?'✔ ผ่านเป้า':'✘ ต่ำกว่าเป้า'}</span></div>
+   <div class="track"><div class="f" style="width:${x.result/mx*100}%"></div><div class="mk" style="left:${x.target/mx*100}%"></div></div>
+   <div class="tg">เป้าหมาย ${fmtT(x)}</div>
+   <div class="dots">ระดับคะแนน ${Array.from({length:M.w.m},(_,n)=>`<b class="${n<x.level?'on':''}"></b>`).join('')}<span style="margin-left:4px;color:var(--ink);font-weight:700">${x.level}/${M.w.m}</span></div></div>`;
+}
+function radar(h,P,keys,nm){
+  const cx=190,cy=165,R=105,n=keys.length;
+  const pt=(i,v,k=1)=>{const a=-Math.PI/2+i*2*Math.PI/n,r=R*k*Math.min(v??0,100)/100;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  const poly=o=>keys.map(([k],i)=>pt(i,o[k]).join(',')).join(' ');
+  let s=`<svg viewBox="0 0 380 340" width="100%" style="max-width:430px;font-family:Prompt,Tahoma,sans-serif">`;
+  [25,50,75,100].forEach(g=>s+=`<polygon points="${keys.map((_,i)=>pt(i,g).join(',')).join(' ')}" fill="${g===100?'#F4F9FE':'none'}" stroke="#DCE8F1"/>`);
+  keys.forEach(([k,t],i)=>{const[x,y]=pt(i,100),[lx,ly]=pt(i,100,1.17);s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#DCE8F1"/><text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="12" fill="#74889A">${t}</text>`});
+  s+=`<polygon points="${poly(P)}" fill="rgba(143,211,176,.35)" stroke="${C.greenD}" stroke-width="2"/><polygon points="${poly(h)}" fill="rgba(244,166,195,.45)" stroke="${C.pinkD}" stroke-width="2.5"/>`;
+  s+=`<text x="10" y="330" font-size="12" fill="${C.pinkT}">● ${nm}</text><text x="250" y="330" font-size="12" fill="${C.greenT}">● รวมจังหวัด</text></svg>`;
+  return s;
+}
+
+/* ---------- TAB 0: ภาพรวม ---------- */
+function tab0(){
+  const t=M.total,r=88,Cc=2*Math.PI*r,p=Math.min(t/M.w.t,1);
+  const ring=`<svg width="210" height="210" viewBox="0 0 210 210" style="font-family:Prompt,Tahoma,sans-serif"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4A6C3"/><stop offset=".5" stop-color="#8FD3B0"/><stop offset="1" stop-color="#9CCBEF"/></linearGradient></defs>
+   <circle cx="105" cy="105" r="${r}" fill="none" stroke="#EEF3F7" stroke-width="18"/>
+   <circle cx="105" cy="105" r="${r}" fill="none" stroke="url(#gr)" stroke-width="18" stroke-linecap="round" stroke-dasharray="${Cc*p} ${Cc}" transform="rotate(-90 105 105)"/>
+   <text x="105" y="110" text-anchor="middle" font-size="46" font-weight="700" fill="${C.blueT}">${nf(t,2)}</text>
+   <text x="105" y="134" text-anchor="middle" font-size="13" fill="#74889A">จาก ${M.w.t} คะแนน</text></svg>`;
+  const cc={q:'b',o:'g',i:'p',s:'b'};
+  const cards=M.comp.map((c,i)=>`<div class="card sc ${['b','g','p','b'][i]}"><div class="t">${c.label.replace('เชิงคุณภาพ ','')} (${Math.round(c.w*100)}%)</div><div class="v">${nf(c.earned,2)}</div><div class="m">เต็ม ${nf(c.max,2)} · ทำได้ ${nf(c.earned/c.max*100,0)}%</div><div class="prog"><i style="width:${c.earned/c.max*100}%;background:${colOf(['b','g','p','b'][i])}"></i></div></div>`).join('');
+  const hw=M.hosp.filter(h=>h.homeward).length;
+  const att=M.inds.map(x=>({label:x.k+'. '+x.short,val:x.result/x.target*100,color:x.result>=x.target?C.greenD:C.pinkD,text:nf(x.result/x.target*100,0)+'%'}));
+  const rows=M.inds.map((x,i)=>`<tr><td class="l">${x.k}. ${x.short}</td><td>${fmtT(x)}</td><td><b>${fmtR(x,x.result)}</b></td><td><span class="pill ${x.result>=x.target?'ok':'no'}">${x.result>=x.target?'✔ ผ่านเป้า':'✘ ต่ำกว่าเป้า'}</span></td><td style="background:${heat(x.level,1,M.w.m)}"><b>${x.level}</b></td></tr>`).join('');
+  return`<h2>ผลการดำเนินงานภาพรวม <small>คะแนนรวมตามเกณฑ์ ${Math.round(M.w.q*100)}:${Math.round(M.w.o*100)}:${Math.round(M.w.i*100)}:${Math.round(M.w.s*100)}</small></h2>
+  <div class="grid hero"><div class="card ring">${ring}<div class="l">คะแนนรวมทั้งหมด</div></div><div class="grid g2">${cards}</div></div>
+  <div class="grid g3" style="margin-top:14px">
+   <div class="card stat"><div class="ic" style="background:var(--blue-l)">🏥</div><div><b>${M.hosp.length}</b><span>โรงพยาบาลในจังหวัด</span></div></div>
+   <div class="card stat"><div class="ic" style="background:var(--green-l)">✔</div><div><b>${M.pass} / ${M.inds.length}</b><span>ตัวชี้วัดเชิงปริมาณที่ผ่านเป้า</span></div></div>
+   <div class="card stat"><div class="ic" style="background:var(--pink-l)">🏠</div><div><b>${hw} / ${M.hosp.length}</b><span>โรงพยาบาลที่ให้บริการ Home ward for active dying patient</span></div></div></div>
+  <h2>สรุปตัวชี้วัดเชิงปริมาณ 9 ตัว</h2>
+  <div class="card"><div class="tbl"><table><thead><tr><th class="l">ตัวชี้วัด</th><th>เป้าหมาย</th><th>ผลงาน</th><th>สถานะ</th><th>ระดับคะแนน (เต็ม ${M.w.m})</th></tr></thead><tbody>${rows}
+   <tr class="prov"><td class="l">รวมระดับคะแนนเชิงปริมาณ</td><td></td><td></td><td></td><td>${M.levelSum} / ${M.levelMax} (${nf(M.pctQ,1)}%)</td></tr></tbody></table></div></div>`;
+}
+
+/* ---------- TAB 1: ตัวชี้วัดเชิงปริมาณ + เปรียบเทียบรายรพ. ---------- */
+const FULLN=SHORT;
+const HWN='Home ward for active dying patient';
+let metric=2,sortK='name',sortAsc=true;
+function tab1(){
+  return`<h2>ตัวชี้วัดเชิงปริมาณ <small>น้ำหนัก ${Math.round(M.w.q*100)}% · 9 ตัวชี้วัด · ผ่านเป้า ${M.pass} ตัว</small></h2>
+  <div class="grid g3">${M.inds.map(kpiCard).join('')}</div>
+  <h2>เปรียบเทียบรายโรงพยาบาล <small>เลือกตัวชี้วัดที่ต้องการดู</small></h2>
+  <div class="card"><div style="margin-bottom:14px"><select id="mSel" style="width:100%">${FULLN.map((n,i)=>`<option value="${i+1}" ${i+1===metric?'selected':''}>${i+1}. ${n}</option>`).join('')}</select></div><div id="mBars"></div></div>
+  <h2>ตารางเปรียบเทียบ (Heatmap) <small>คลิกหัวคอลัมน์เพื่อเรียงลำดับ</small></h2>
+  <div class="card"><div class="tbl"><table id="cmpTbl"></table></div>
+   <div class="legend">ต่ำ <i></i> สูง · แถวสีเขียวด้านล่าง = รวมจังหวัด</div>
+   <div class="note">ตัวชี้วัดที่ 6 (อัตราประชากรที่จัดทำ Living Will) เป็นข้อมูลระดับประเทศ ไม่มีตัวเลขแยกรายโรงพยาบาล</div></div>`;
+}
+function drawBars(){
+  const x=M.inds[metric-1],ok=x.result>=x.target;
+  const head=`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px"><span class="pill ${ok?'ok':'no'}">${ok?'✔ ผ่านเป้า':'✘ ต่ำกว่าเป้า'}</span><b>รวมจังหวัด ${fmtR(x,x.result)}</b><span style="color:var(--mut)">เป้าหมาย ${fmtT(x)}</span></div>`;
+  let body='';
+  if(metric===6){
+    body=`<div class="note" style="font-size:14px">ตัวชี้วัดนี้เป็นข้อมูลระดับประเทศ (สำนักงานคณะกรรมการสุขภาพแห่งชาติ) ไม่มีตัวเลขแยกรายโรงพยาบาล · ผู้จัดทำ Living Will ${ni(x.TA)} คน จากประชากรอายุมากกว่า 18 ปี ${ni(x.TB)} คน</div>`;
+  }else if(metric===9){
+    const n=M.hosp.filter(h=>h.homeward).length;
+    body=`<div class="grid g4" style="gap:10px">${M.hosp.map(h=>`<div style="padding:10px 14px;border-radius:12px;background:${h.homeward?'var(--green-l)':'var(--pink-l)'};color:${h.homeward?'var(--green-t)':'var(--pink-t)'}"><b>${h.homeward?'✔':'✘'}</b> ${h.name}</div>`).join('')}</div>
+     <div class="legend"><span style="color:${C.greenT}">■</span> ให้บริการ ${n} แห่ง <span style="color:${C.pinkT};margin-left:10px">■</span> ยังไม่ให้บริการ ${M.hosp.length-n} แห่ง · คิดเป็น ${nf(x.result,1)}% ของโรงพยาบาลทั้งหมด</div>`;
+  }else{
+    const isL=metric===1;
+    const arr=M.hosp.map((h,i)=>({n:h.name,v:isL?x.A[i]:h.v[metric]})).sort((a,b)=>(b.v??-1)-(a.v??-1));
+    const mx=isL?Math.max(5,...arr.map(a=>a.v||0)):Math.max(100,...arr.map(a=>a.v||0));
+    body=hbars(arr.map(a=>({label:a.n,val:a.v??0,color:(a.v??0)>=x.target?C.greenD:C.pinkD,text:a.v==null?'–':(isL?ni(a.v):nf(a.v,1))})),{max:mx,mark:x.target,rank:true,lw:190})+
+     `<div class="legend"><span style="color:${C.greenT}">■</span> ถึงเป้าหมาย <span style="color:${C.pinkT}">■</span> ต่ำกว่าเป้าหมาย · เส้นดำ = เป้าหมาย (${fmtT(x)})${isL?' · แสดงค่าระดับทรัพยากรและระบบ (A1×A2) ของแต่ละโรงพยาบาล':''}</div>`;
+  }
+  $('mBars').innerHTML=head+body;
+}
+function drawTbl(){
+  const cols=[['name','โรงพยาบาล'],['r1','1. '+SHORT[0]],['v2','2. '+SHORT[1]],['v3','3. '+SHORT[2]],['v4','4. '+SHORT[3]],['v5','5. '+SHORT[4]],['v7','7. '+SHORT[6]],['v8','8. '+SHORT[7]],['hw','9. '+SHORT[8]],['oT','ผลลัพธ์ (0-100)'],['iT','ผลกระทบ (0-100)'],['quality','คุณภาพรวม']];
+  const I=M.inds;
+  const val=(h,k)=>{const i=M.hosp.indexOf(h);return k==='name'?h.name:k==='r1'?I[0].A[i]:k==='hw'?(h.homeward?1:0):k[0]==='v'?h.v[+k[1]]:h[k]};
+  const rows=[...M.hosp].sort((a,b)=>{const x=val(a,sortK),y=val(b,sortK);const r=typeof x==='string'?x.localeCompare(y,'th'):(x??-1)-(y??-1);return sortAsc?r:-r});
+  const ql=Math.min(...M.hosp.map(h=>h.quality)),qh=Math.max(...M.hosp.map(h=>h.quality));
+  const cell=(h,k)=>{const v=val(h,k);
+    if(k==='name')return`<td class="l n"><b>${h.name}</b></td>`;
+    if(k==='hw')return`<td><span class="pill ${v?'ok':'no'}">${v?'✔ ให้บริการ':'✘ ไม่มี'}</span></td>`;
+    if(k==='r1')return`<td style="background:${heat(v,1,5)}">${ni(v)}</td>`;
+    if(k==='quality')return`<td style="background:${heat(v,ql,qh)}"><b>${nf(v,2)}</b></td>`;
+    return`<td style="background:${heat(v)}">${nf(v,1)}</td>`};
+  const p=M.prov;
+  const pr=`<tr class="prov"><td class="l">รวมจังหวัด</td><td>${nf(I[0].result,2)}</td><td>${nf(I[1].result,1)}</td><td>${nf(I[2].result,1)}</td><td>${nf(I[3].result,1)}</td><td>${nf(I[4].result,1)}</td><td>${nf(I[6].result,1)}</td><td>${nf(I[7].result,1)}</td><td>${nf(I[8].result,1)}%</td><td>${nf(p.oT,1)}</td><td>${nf(p.iT,1)}</td><td>${nf(p.quality,2)}</td></tr>`;
+  $('cmpTbl').innerHTML=`<thead><tr>${cols.map(([k,t])=>`<th class="s ${k==='name'?'l':''} ${sortK===k?'sorted '+(sortAsc?'asc':''):''}" data-k="${k}" style="white-space:normal;min-width:${k==='name'?130:(k.length>4?100:k[0]==='r'||k[0]==='v'||k==='hw'?190:96)}px;max-width:${k==='name'?130:230}px;font-size:11px;line-height:1.35;vertical-align:top">${t}</th>`).join('')}</tr></thead><tbody>${rows.map(h=>'<tr>'+cols.map(([k])=>cell(h,k)).join('')+'</tr>').join('')}${pr}</tbody>`;
+  $('cmpTbl').querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortK===k)sortAsc=!sortAsc;else{sortK=k;sortAsc=k==='name'}drawTbl()});
+}
+
+/* ---------- TAB 2: เชิงคุณภาพ ---------- */
+function qualTable(items,totLabel,tot,sc,color){
+  const head=items.map(q=>`<th style="white-space:normal;min-width:92px;font-size:12px;line-height:1.3">${q.name}</th>`).join('');
+  const body=M.hosp.map((h,i)=>`<tr><td class="l n"><b>${h.name}</b></td>${items.map(q=>`<td style="background:${heat(q.vals[i],40,100)}">${nf(q.vals[i],0)}</td>`).join('')}<td class="sub"><b>${nf(h[tot],1)}</b></td><td style="background:${heat(h[sc]/M.prov[sc]*70,0,100)}"><b>${nf(h[sc],2)}</b></td></tr>`).join('');
+  const pr=`<tr class="prov"><td class="l">รวมจังหวัด (เฉลี่ย)</td>${items.map(q=>`<td>${nf(q.avg,1)}</td>`).join('')}<td>${nf(M.prov[tot],1)}</td><td>${nf(M.prov[sc],2)}</td></tr>`;
+  return`<div class="tbl"><table><thead><tr><th class="l">โรงพยาบาล</th>${head}<th>${totLabel}</th><th>คะแนนที่ได้</th></tr></thead><tbody>${body}${pr}</tbody></table></div>`;
+}
+function qualBlock(title,chip,items,tot,sc,col,totLabel){
+  const bars=items.map(q=>`<div class="item"><div class="hb" style="--lw:230px;margin:0"><span><b>${q.name}</b></span><div class="tr"><i style="width:${q.avg}%;background:${q.avg>=85?C.greenD:q.avg>=70?C.blueD:q.avg>=55?C.pink:C.pinkD}"></i></div><b>${nf(q.avg,1)}</b></div><div class="d">${q.desc}</div></div>`).join('');
+  return`<h2>${title} <span class="chip ${chip[1]}">${chip[0]}</span></h2>
+  <div class="grid" style="grid-template-columns:minmax(0,4fr) minmax(0,8fr);align-items:start"><div class="card"><div style="font-weight:600;margin-bottom:4px">คะแนนเฉลี่ยระดับจังหวัด (เต็ม 100)</div>${bars}
+   <div style="display:flex;justify-content:space-between;margin-top:12px;font-weight:700"><span>รวม (เฉลี่ย)</span><span style="color:var(--blue-t)">${nf(M.prov[tot],1)} → ได้ ${nf(M.prov[sc],2)} คะแนน</span></div></div>
+   <div class="card"><div style="font-weight:600;margin-bottom:8px">คะแนนรายโรงพยาบาล (เต็ม 100)</div>${qualTable(items,totLabel,tot,sc,col)}</div></div>`;
+}
+function tab2(){
+  const q=M.hosp.map(h=>({label:h.name,val:h.quality,color:h.quality>=M.prov.quality?C.greenD:C.pinkD,text:nf(h.quality,2)})).sort((a,b)=>b.val-a.val);
+  return`<h2>ผลการดำเนินงานเชิงคุณภาพ <small>ผลลัพธ์ ${Math.round(M.w.o*100)}% · ผลกระทบ ${Math.round(M.w.i*100)}% · เครือข่าย SP ${Math.round(M.w.s*100)}%</small></h2>
+  <div class="grid g3"><div class="card sc g"><div class="t">ด้านผลลัพธ์</div><div class="v">${nf(M.comp[1].earned,2)}<small style="font-size:14px;color:var(--mut)"> / ${nf(M.comp[1].max,2)}</small></div><div class="m">คะแนนเฉลี่ย ${nf(M.prov.oT,1)} / 100</div></div>
+   <div class="card sc p"><div class="t">ด้านผลกระทบ</div><div class="v">${nf(M.comp[2].earned,2)}<small style="font-size:14px;color:var(--mut)"> / ${nf(M.comp[2].max,2)}</small></div><div class="m">คะแนนเฉลี่ย ${nf(M.prov.iT,1)} / 100</div></div>
+   <div class="card sc b"><div class="t">ด้านเครือข่าย Service Plan</div><div class="v">${nf(M.comp[3].earned,2)}<small style="font-size:14px;color:var(--mut)"> / ${nf(M.comp[3].max,2)}</small></div><div class="m">คะแนนเฉลี่ย ${nf(M.prov.sT,1)} / 100</div></div></div>
+  ${qualBlock('ด้านผลลัพธ์ – Building Block',[Math.round(M.w.o*100)+'%','g'],M.O,'oT','oS','g','รวมเฉลี่ย')}
+  ${qualBlock('ด้านผลกระทบ',[Math.round(M.w.i*100)+'%','p'],M.I,'iT','iS','p','รวมเฉลี่ย')}
+  ${qualBlock('ด้านการดำเนินงานเครือข่าย Service Plan',[Math.round(M.w.s*100)+'%',''],M.S,'sT','sS','b','รวม')}
+  <h2>คะแนนเชิงคุณภาพรวมรายโรงพยาบาล <small>ผลลัพธ์ + ผลกระทบ + เครือข่าย SP · เต็ม ${nf((M.w.o+M.w.i+M.w.s)*M.w.t,2)} · เส้นดำ = ค่าเฉลี่ยจังหวัด</small></h2>
+  <div class="card">${hbars(q,{max:(M.w.o+M.w.i+M.w.s)*M.w.t,mark:M.prov.quality,rank:true,lw:200})}</div>`;
+}
+
+/* ---------- TAB 4: ดูรายรพ. เทียบจังหวัด ---------- */
+let selH=0;
+function tab3(){
+  return`<h2>ดูรายโรงพยาบาลเทียบกับค่ารวมจังหวัด</h2>
+  <div class="card"><div style="margin-bottom:14px">เลือกโรงพยาบาล: <select id="hSel">${M.hosp.map((h,i)=>`<option value="${i}" ${i===selH?'selected':''}>${h.full}</option>`).join('')}</select></div>
+   <div id="hHead" class="grid g4" style="margin-bottom:14px"></div>
+   <div class="sel-row"><div id="radar" style="text-align:center"></div><div id="hTbl"></div></div></div>
+  <h2>คะแนนเชิงคุณภาพรายหัวข้อ เทียบค่าเฉลี่ยจังหวัด</h2><div class="card" id="hQual"></div>`;
+}
+function drawH(){
+  const h=M.hosp[selH],I=M.inds,P=M.prov;
+  const rank=[...M.hosp].sort((a,b)=>b.quality-a.quality).findIndex(x=>x===h)+1;
+  $('hHead').innerHTML=`<div class="card sc p" style="box-shadow:none"><div class="t">คะแนนคุณภาพรวม</div><div class="v">${nf(h.quality,2)}</div><div class="m">จังหวัด ${nf(P.quality,2)} · เต็ม ${nf((M.w.o+M.w.i+M.w.s)*M.w.t,2)}</div></div>
+   <div class="card sc g" style="box-shadow:none"><div class="t">อันดับคะแนนคุณภาพ</div><div class="v">${rank} <small style="font-size:14px;color:var(--mut)">/ ${M.hosp.length}</small></div></div>
+   <div class="card sc b" style="box-shadow:none"><div class="t">${HWN}</div><div class="v" style="font-size:22px">${h.homeward?'✔ ให้บริการ':'✘ ยังไม่ให้บริการ'}</div></div>
+   <div class="card sc b" style="box-shadow:none"><div class="t">คะแนนความพร้อมทรัพยากร (A1×A2)</div><div class="v">${ni(I[0].A[selH])}</div><div class="m">ผลรวมจังหวัด ${ni(I[0].TA)} → ${nf(I[0].result,2)}</div></div>`;
+  const O={adult:h.v[2],child:h.v[3],home:h.v[4],acp:h.v[5],ppod:h.v[7],opioid:h.v[8]};
+  const PP={adult:I[1].result,child:I[2].result,home:I[3].result,acp:I[4].result,ppod:I[6].result,opioid:I[7].result};
+  $('radar').innerHTML=radar(O,PP,[['adult','ผู้ใหญ่เข้าถึง'],['child','เด็กเข้าถึง'],['home','ดูแลที่บ้าน'],['acp','FM/ACP'],['ppod','ตามประสงค์'],['opioid','Opioid']],h.name);
+  const diff=(a,b,d=1)=>{if(a==null||b==null)return'–';const x=a-b;return`<span class="${x>=0?'up':'dn'}">${x>=0?'▲ +':'▼ −'}${nf(Math.abs(x),d)}</span>`};
+  const L=[2,3,4,5,7,8].map(k=>[k,k+'. '+SHORT[k-1]]);
+  $('hTbl').innerHTML=`<div class="tbl"><table><thead><tr><th class="l">ตัวชี้วัด</th><th>จำนวน (A/B)</th><th>รพ. นี้ (%)</th><th>จังหวัด (%)</th><th>เทียบจังหวัด</th></tr></thead><tbody>`+
+   L.map(([k,t])=>`<tr><td class="l">${t}</td><td class="n">${ni(I[k-1].A[selH])} / ${ni(I[k-1].B[selH])}</td><td style="background:${heat(h.v[k])}"><b>${nf(h.v[k],1)}</b></td><td>${nf(I[k-1].result,1)}</td><td>${diff(h.v[k],I[k-1].result)}</td></tr>`).join('')+
+   `<tr><td class="l">${HWN}</td><td>–</td><td><span class="pill ${h.homeward?'ok':'no'}">${h.homeward?'✔ ให้บริการ':'✘ ไม่มี'}</span></td><td>${nf(I[8].result,1)}% ของ รพ.</td><td>${h.homeward?'<span class="up">✔ ให้บริการ</span>':'<span class="dn">✘ ยังไม่ให้บริการ</span>'}</td></tr><tr class="sub"><td class="l">ผลลัพธ์ (0-100)</td><td></td><td>${nf(h.oT,1)}</td><td>${nf(P.oT,1)}</td><td>${diff(h.oT,P.oT)}</td></tr><tr class="sub"><td class="l">ผลกระทบ (0-100)</td><td></td><td>${nf(h.iT,1)}</td><td>${nf(P.iT,1)}</td><td>${diff(h.iT,P.iT)}</td></tr></tbody></table></div>`;
+  const items=[...M.O,...M.I,...M.S];
+  const tag=q=>M.O.includes(q)?'ผลลัพธ์':M.I.includes(q)?'ผลกระทบ':'เครือข่าย SP';
+  $('hQual').innerHTML=`<div class="tbl"><table><thead><tr><th class="l">หัวข้อ</th><th>หมวด</th><th>รพ. นี้</th><th>เฉลี่ยจังหวัด</th><th>เทียบจังหวัด</th></tr></thead><tbody>`+
+   items.map(q=>`<tr><td class="l">${q.name}</td><td><span class="chip ${M.O.includes(q)?'g':M.I.includes(q)?'p':''}" style="margin:0">${tag(q)}</span></td><td style="background:${heat(q.vals[selH],40,100)}"><b>${nf(q.vals[selH],0)}</b></td><td>${nf(q.avg,1)}</td><td>${diff(q.vals[selH],q.avg)}</td></tr>`).join('')+`</tbody></table></div>`;
+}
+
+/* ---------- render & wiring ---------- */
+const TABS=['ผลการดำเนินงานภาพรวม','ตัวชี้วัดเชิงปริมาณ / เปรียบเทียบรายรพ.','เชิงคุณภาพ','ดูรายรพ. เทียบกับค่ารวมจังหวัด'];
+let cur=0;
+function show(i){cur=i;document.querySelectorAll('section.tab').forEach((s,n)=>s.classList.toggle('on',n===i));[...$('nav').children].forEach((b,n)=>b.classList.toggle('on',n===i));window.scrollTo({top:0})}
+function renderAll(){
+  $('t0').innerHTML=tab0();$('t1').innerHTML=tab1();$('t2').innerHTML=tab2();$('t3').innerHTML=tab3();
+  drawBars();drawTbl();drawH();
+  $('mSel').onchange=e=>{metric=+e.target.value;drawBars()};
+  $('hSel').onchange=e=>{selH=+e.target.value;drawH()};
+  show(cur);
+}
+$('nav').innerHTML=TABS.map((t,i)=>`<button onclick="show(${i})">${i+1}. ${t}</button>`).join('');
+/*toast*/function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3500)}
+/* =====================  ตั้งค่า (แก้เฉพาะตรงนี้)  =====================
+   CSV_URL : ลิงก์ Google Sheets ที่ "เผยแพร่ไปยังเว็บ" (File → Share → Publish to web → CSV)
+   SHEET_ID: ทางเลือก – ใช้รหัสชีต (ชีตต้องแชร์เป็น "ทุกคนที่มีลิงก์ดูได้") ใช้เมื่อ CSV_URL ว่าง
+   REFRESH_SECONDS : ความถี่ในการดึงข้อมูลใหม่ (วินาที) */
+const CONFIG={
+  CSV_URL:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRD7wSgAws_JMlxDyT8KsgI8JpFEPqa8Y-xVUvvQxBVMX7X-2ZeL_hsfxYF8kK6rGD9EdKCrexCI8EU/pub?gid=2126676433&single=true&output=csv',
+  SHEET_ID:'',SHEET_NAME:'ข้อมูล',REFRESH_SECONDS:30};
+(()=>{const q=new URLSearchParams(location.search);
+  if(q.get('csv'))CONFIG.CSV_URL=q.get('csv');
+  if(q.get('id')){CONFIG.SHEET_ID=q.get('id');CONFIG.CSV_URL=''}
+  if(q.get('every'))CONFIG.REFRESH_SECONDS=+q.get('every');})();
+
+/* ---------- อ่าน CSV จาก Google Sheets ---------- */
+function parseCSV(s){
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<s.length;i++){const c=s[i];
+    if(q){if(c==='"'){if(s[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;
+    else if(c===','){row.push(f);f=''}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&s[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}
+    else f+=c}
+  if(f!==''||row.length){row.push(f);rows.push(row)}
+  return rows;
+}
+const NUM=/^-?\d[\d,]*(\.\d+)?%?$|^-?\.\d+%?$/;
+const HPAIR=[['พหลพลพยุเสนา','พหลพลพยุเสนา'],['มะการักษ์','มะการักษ์'],['ทองผาภูมิ','ทองผาภูมิ'],['สมเด็จพระสังฆราชองค์ที่ ๑๙','สมเด็จพระสังฆราช ๑๙'],['บ่อพลอย','บ่อพลอย'],['เจ้าคุณไพบูลย์พนมทวน','เจ้าคุณไพบูลย์ฯ'],['สังขละบุรี','สังขละบุรี'],['เลาขวัญ','เลาขวัญ'],['ไทรโยค','ไทรโยค'],['ท่ากระดาน','ท่ากระดาน'],['ด่านมะขามเตี้ย','ด่านมะขามเตี้ย'],['สมเด็จพระปิยมหาราชรมณียเขต','สมเด็จพระปิยฯ'],['หนองปรือ','หนองปรือ'],['ห้วยกระเจาเฉลิมพระเกียรติ ๘๐ พรรษา','ห้วยกระเจาฯ ๘๐ พรรษา'],['ศุกร์ศิริศรีสวัสดิ์','ศุกร์ศิริศรีสวัสดิ์'],['พยาบาลสถานพระบารมี','พยาบาลสถานพระบารมี']];
+const HSHORT=Object.fromEntries(HPAIR);
+
+/* แปลงรูปแบบ "รายงานต้นฉบับ" (ชีตเดียว) ให้เป็นโครงเดียวกับชีต "ข้อมูล" */
+function adaptOriginal(g){
+  const N=16,txt=v=>v==null?'':String(v).trim();
+  const nameRows=[];g.forEach((r,i)=>{if(r&&txt(r[4])===HPAIR[0][0])nameRows.push(i)});
+  if(!nameRows.length)throw new Error('ไม่พบแถวชื่อโรงพยาบาลในชีต (คอลัมน์ E ควรเริ่มด้วย "'+HPAIR[0][0]+'")');
+  const hn=Array.from({length:N},(_,i)=>txt(g[nameRows[0]][4+i]));
+  const out=[],set=(r,a)=>{out[r-1]=a};
+  const vals=(r,o)=>Array.from({length:N},(_,i)=>r?(r[o+i]??null):null);
+  set(4,['รหัส','ตัวชี้วัด','เป้าหมาย',...hn]);
+  set(5,[null,'ชื่อย่อ',null,...hn.map(n=>HSHORT[n]||n)]);
+  const starts=[];g.forEach((r,i)=>{if(r&&/^\s*\d\.\s/.test(txt(r[1]))&&/^A\s*=/.test(txt(r[3])))starts.push(i)});
+  if(starts.length<9)throw new Error('พบตัวชี้วัดเชิงปริมาณเพียง '+starts.length+' จาก 9 ตัว – ตรวจสอบว่าเผยแพร่ชีตที่ถูกต้อง');
+  starts.slice(0,9).forEach((s,k)=>{
+    const rA=g[s],rB=g[s+1]||[],tr=7+4*k;
+    let tg=rA[2];if(typeof tg!=='number'){const m=txt(tg).replace(/,/g,'').match(/\d+(\.\d+)?/);tg=m?+m[0]:null}
+    set(tr,['KPI'+(k+1),txt(rA[1]),tg]);
+    set(tr+1,[null,txt(rA[3]),null,...vals(rA,4),rA[20]??null]);
+    set(tr+2,[null,txt(rB[3]),null,...vals(rB,4),rB[20]??null]);
+    const rr=[];rr[1]=txt((g[s+2]||[])[3]);rr[21]=typeof rA[21]==='number'?rA[21]:null;set(tr+3,rr);
+  });
+  const groups=[['O',nameRows[1]],['M',nameRows[2]],['S',nameRows[3]]];
+  let rowNo=100;
+  groups.forEach(([p,start])=>{
+    if(start==null)throw new Error('ไม่พบส่วนคะแนนเชิงคุณภาพ ('+p+')');
+    let n=0;
+    for(let i=start+1;i<g.length;i++){
+      const r=g[i];if(!r||!txt(r[1])||/^(รวม|รวท)/.test(txt(r[1])))break;
+      n++;const a=[p+n,txt(r[1]),null,...vals(r,4)];a[22]=txt(r[2]);set(rowNo++,a);
+    }
+  });
+  [['น้ำหนักคะแนนเชิงปริมาณ',.7],['น้ำหนักคะแนนเชิงคุณภาพ ด้านผลลัพธ์',.15],['น้ำหนักคะแนนเชิงคุณภาพ ด้านผลกระทบ',.1],['น้ำหนักคะแนนเชิงคุณภาพ ด้านเครือข่าย',.05],['คะแนนเต็มต่อตัวชี้วัด',10],['คะแนนรวมเต็ม',10]].forEach(([l,v])=>set(rowNo++,[null,l,null,v]));
+  return out;
+}
+function csvToGrid(text){
+  const rows=parseCSV(text.replace(/^﻿/,'')).map(r=>r.map(c=>{
+    const v=(c||'').trim();if(v==='')return null;
+    if(NUM.test(v)){const p=v.endsWith('%');const n=parseFloat(v.replace(/[,%]/g,''));return p?n/100:n}
+    return v;}));
+  const anchor=rows.findIndex(r=>r[0]==='รหัส');
+  if(anchor>=0)return[...Array(Math.max(0,3-anchor)).fill([]),...rows.slice(Math.max(0,anchor-3))]; // โครงชีต "ข้อมูล"
+  return adaptOriginal(rows); // โครงรายงานต้นฉบับ
+}
+function sheetUrl(){
+  const sep=u=>u.includes('?')?'&':'?';
+  if(CONFIG.CSV_URL)return CONFIG.CSV_URL+sep(CONFIG.CSV_URL)+'_='+Date.now();
+  const u=`https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(CONFIG.SHEET_NAME)}`;
+  return u+'&_='+Date.now();
+}
+
+/* ---------- ซิงก์อัตโนมัติ ---------- */
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3500)}
+let lastText=null,syncBusy=false,nextAt=0,lastOk=null,errMsg='';
+function setSrc(msg,warn){const e=$('src');e.textContent=msg;e.style.borderColor=warn?'#F4A6C3':'';e.style.background=warn?'#FFF6FA':'';e.style.color=warn?'#B8366D':''}
+function fatal(msg){
+  const card=`<div class="card" style="max-width:720px;margin:40px auto;text-align:center"><div style="font-size:40px">🔌</div><h3 style="margin:8px 0">เชื่อมต่อ Google Sheets ไม่สำเร็จ</h3><p style="color:var(--pink-t)">${msg}</p>
+   <div style="text-align:left;display:inline-block;color:var(--mut);font-size:13px">ตรวจสอบ:<br>1) ชีตถูกเผยแพร่แล้ว (File → Share → Publish to web → เลือกชีต → CSV)<br>2) ลิงก์ CSV_URL ในไฟล์ถูกต้อง<br>3) อินเทอร์เน็ตเชื่อมต่อปกติ — ระบบจะลองใหม่ทุก ${CONFIG.REFRESH_SECONDS} วินาที</div></div>`;
+  ['t0','t1','t2','t3'].forEach(id=>$(id).innerHTML=id==='t0'?card:'');
+}
+async function syncNow(manual){
+  if(syncBusy)return;syncBusy=true;
+  try{
+    const res=await fetch(sheetUrl(),{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status+' – ตรวจสอบว่าเผยแพร่/แชร์ชีตแล้ว');
+    const text=await res.text();
+    if(/^\s*<(!doctype|html)/i.test(text))throw new Error('ได้หน้าเว็บแทนข้อมูล CSV – ชีตอาจยังไม่ได้เผยแพร่หรือไม่ได้แชร์เป็นสาธารณะ');
+    if(text!==lastText){
+      const first=lastText===null;
+      M=buildModel(csvToGrid(text));lastText=text;
+      if(selH>=M.hosp.length)selH=0;
+      renderAll();
+      if(!first||manual)toast('อัปเดตข้อมูลจาก Google Sheets แล้ว');
+    }
+    lastOk=new Date();errMsg='';
+  }catch(e){
+    console.error(e);errMsg=e.message;
+    if(M===null)fatal(e.message);
+  }finally{syncBusy=false;nextAt=Date.now()+CONFIG.REFRESH_SECONDS*1000;tickLabel()}
+}
+function tickLabel(){
+  if(errMsg){setSrc('⚠ ดึงข้อมูลไม่สำเร็จ – '+errMsg+(lastOk?' · แสดงข้อมูลล่าสุดเมื่อ '+lastOk.toLocaleTimeString('th-TH'):'')+' · ลองใหม่ใน '+Math.max(0,Math.round((nextAt-Date.now())/1000))+' วินาที',true);return}
+  if(!lastOk){setSrc('กำลังเชื่อมต่อ Google Sheets…');return}
+  setSrc('● Google Sheets · อัปเดตล่าสุด '+lastOk.toLocaleTimeString('th-TH')+' · รอบถัดไปใน '+Math.max(0,Math.round((nextAt-Date.now())/1000))+' วินาที');
+}
+['t0','t1','t2','t3'].forEach(id=>$(id).innerHTML=id==='t0'?'<div class="card" style="text-align:center;padding:60px;color:var(--mut)">กำลังโหลดข้อมูลจาก Google Sheets…</div>':'');
+show(0);
+$('btnSync').onclick=()=>{lastText=null;syncNow(true)};
+syncNow(false);
+setInterval(()=>{if(!document.hidden&&Date.now()>=nextAt)syncNow(false);else tickLabel()},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncNow(false)});
+</script>
+</body>
+</html>
